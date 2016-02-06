@@ -2,6 +2,7 @@
 ======================================================================= */
 var developmentConfig = require('./webpack.base.js');
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+var historyApiFallback = require('connect-history-api-fallback')
 
 developmentConfig.plugins.push(
   // Run Browser sync, starting a server serving our build files
@@ -10,7 +11,8 @@ developmentConfig.plugins.push(
     port: 3005,
     open: false,
     server: {
-      baseDir: ['public']
+      baseDir: ['public'],
+      middleware: [ historyApiFallback() ]
     }
   })
 );

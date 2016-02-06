@@ -3,10 +3,12 @@ var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+var baseDir = path.resolve(__dirname, '..');
+
 /* Inform webpack that our node modules are commonjs
 ======================================================================= */
 var nodeModules = {};
-fs.readdirSync('node_modules')
+fs.readdirSync(path.join(baseDir, 'node_modules'))
   .filter(function(file) {
     return ['.bin'].indexOf(file) === -1;
   })
@@ -40,11 +42,12 @@ DirectoryDefaultFilePlugin.prototype.apply = function (resolver) {
 /* Default Configuration
 ======================================================================= */
 module.exports = {
+  baseDir: baseDir,
   entry: {
-    'main.js': path.resolve(__dirname, 'app/app.jsx')
+    'main.js': path.join(baseDir, 'app/app.jsx')
   },
   output: {
-    path: path.resolve(__dirname, 'public', 'build'),
+    path: path.join(baseDir, 'public', 'build'),
     filename: '[name]'
   },
   devtool: 'source-map',
@@ -81,9 +84,9 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.css', '.scss'],
     alias: {
-      app: path.resolve(__dirname, 'app'),
-      test: path.resolve(__dirname, 'test'),
-      public: path.resolve(__dirname, 'public')
+      app: path.join(baseDir, 'app'),
+      test: path.join(baseDir, 'test'),
+      public: path.join(baseDir, 'public')
     }
   },
   plugins: [
