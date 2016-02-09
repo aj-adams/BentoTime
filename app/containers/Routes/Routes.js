@@ -13,9 +13,9 @@ const routes = (
   <Route component={Layout}>
     <Route path="/" component={LibraryView} />
 
-    <Route path="/:bookid" component={BookView} />
-    <Route path="/:bookid/:chapterid" component={ChapterView} />
-    <Route path="/:bookid/:chapterid/:pageid" component={PageView} />
+    <Route path="/book/:bookid/chapter/:chapterid/page/:pageid" component={PageView} />
+    <Route path="/book/:bookid/chapter/:chapterid" component={ChapterView} />
+    <Route path="/book/:bookid" component={BookView} />
 
     <Route path="settings" component={SettingsView} />
     <Route path="*" component={NotFoundView} />

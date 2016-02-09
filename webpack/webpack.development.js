@@ -12,7 +12,13 @@ developmentConfig.plugins.push(
     open: false,
     server: {
       baseDir: ['public'],
-      middleware: [ historyApiFallback() ]
+      middleware: [ historyApiFallback({
+        rewrites: [
+          { from: /\.html/, to: '/index.html'},
+          { from: /\.css/, to: '/build/styles.css'},
+          { from: /\.js/, to: '/build/main.js'}
+        ]
+      }) ]
     }
   })
 );

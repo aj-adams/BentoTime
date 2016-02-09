@@ -4,7 +4,9 @@ import { Link } from 'react-router';
 const ChapterListItem = function({ key, book, chapter }) {
   return (
     <li key={key}>
-      <Link to={book.id + '/' + chapter.id}>{chapter.title}</Link>
+      <Link to={'/book/' + book.id + '/chapter/' + chapter.id}>
+        {`${chapter.number} - ${chapter.title}`}
+      </Link>
     </li>
   );
 };

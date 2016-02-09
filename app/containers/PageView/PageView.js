@@ -1,19 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-class PageView extends Component {
-  constructor() {
-    super();
-  }
-
-  componentWillMount() {
-  }
-
-  render() {
-    return <h1>Page View</h1>;
-  }
-}
-
-function select(state) {}
+const PageView = function PageView() {
+  return <h1>Page View</h1>;
+};
 
 export default PageView;

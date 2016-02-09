@@ -1,19 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-class Settings extends Component {
-  constructor() {
-    super();
-  }
+const SettingsView = function SettingsView() {
+  return <h1>Settings View</h1>;
+};
 
-  componentWillMount() {
-  }
-
-  render() {
-    return <h1>Settings View</h1>;
-  }
-}
-
-function select(state) {}
-
-export default connect(select)(Settings);
+export default SettingsView;
