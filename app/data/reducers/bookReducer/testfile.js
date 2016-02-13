@@ -1,46 +1,61 @@
-import { clone, merge } from 'lodash';
+import { clone } from 'lodash';
 import bookReducer from './bookReducer';
-import libraryTypeFixture from 'test/fixtures/types/libraryTypeFixture';
-import bookTypeFixture from 'test/fixtures/types/bookTypeFixture';
+import bookFixture from 'test/fixtures/types/bookTypeFixture';
 import * as ActionTypes from 'app/data/actions/ActionTypes';
 
 describe('Data', function() {
   describe('Reducers', function() {
     describe('Book', function() {
-      xit('Should populate empty states correctly on success', function SetEmptyState() {
-        const library = bookReducer(undefined, {
-          type: ActionTypes.FETCH_BOOK_SUCCESS,
-          receivedAt: 12345,
-          book: bookTypeFixture
+      it('Should set `isFetching` to true when a request is initiated', function setIsFetching() {
+        const nextState = bookReducer(undefined, {
+          type: ActionTypes.FETCH_BOOK_REQUEST
         });
 
-        expect(library.books[bookTypeFixture.id]).deep.equals(bookTypeFixture);
-        expect(library.lastUpdated).to.equal(12345);
-        expect(library.isFetching).to.be.false;
+        expect(nextState.isFetching).to.be.true;
       });
 
-      xit('Should merge state on successful update', function SetActiveState() {
-        const library = clone(libraryTypeFixture);
-        library.books[bookTypeFixture.id] = {
-          propToStay: 'cool and not outdated property',
-          title: 'totally cool, but outdated title'
-        };
-
-        const newLibrary = bookReducer(library, {
+      it('Should populate empty states correctly on success', function SetEmptyState() {
+        const nextState = bookReducer(undefined, {
           type: ActionTypes.FETCH_BOOK_SUCCESS,
           receivedAt: 12345,
-          book: bookTypeFixture
+          book: bookFixture
         });
 
-        const newBook = newLibrary.books[bookTypeFixture.id];
-        expect(newLibrary.lastUpdated).to.equal(12345);
-        expect(newBook.propToStay).to.equal('cool and not outdated property');
-        expect(newBook.title).to.equal('Airindream');
-        expect(newLibrary.isFetching).to.be.false;
+        expect(nextState.isFetching).to.be.false;
+        expect(nextState.id).to.equal(bookFixture.id);
+        expect(nextState.lastUpdated).to.equal(12345);
+        expect(nextState.title).to.equal(bookFixture.title);
+        expect(nextState.chapters).to.deep.equal(bookFixture.chapters);
       });
 
-      xit('Should set isFetching on request');
-      xit('Should error on a failed request');
+      it('Should merge state on successful update', function SetActiveState() {
+        const previousState = clone(bookFixture);
+        previousState.propertyToRemain = 'old state';
+        previousState.id = 'old id';
+
+        const nextBook = clone(bookFixture);
+        nextBook.id = 'next id';
+
+        const nextState = bookReducer(previousState, {
+          type: ActionTypes.FETCH_BOOK_SUCCESS,
+          book: nextBook,
+          receivedAt: 12345
+        });
+
+        expect(nextState.propertyToRemain).to.equal(previousState.propertyToRemain);
+        expect(nextState.id).to.equal(nextBook.id);
+        expect(nextState.isFetching).to.be.false;
+        expect(nextState.title).to.equal('Airindream');
+        expect(nextState.lastUpdated).to.equal(12345);
+      });
+
+      it('Should set `isFetching` to false on a failed request', function respondToErrors() {
+        const nextState = bookReducer(undefined, {
+          type: ActionTypes.FETCH_BOOK_FAILURE
+        });
+
+        expect(nextState.isFetching).to.be.false;
+      });
     });
   });
 });

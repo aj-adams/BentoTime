@@ -39,8 +39,24 @@ describe('Data', function() {
         expect(newLibrary.books[bookId].title).to.exist;
       });
 
-      xit('Should set isFetching on request');
-      xit('Should error on a failed request');
+      it('Should set `isFetching` when a request is initiated', function setIsFetching() {
+        const nextState = libraryReducer(undefined, {
+          type: ActionTypes.FETCH_LIBRARY_REQUEST
+        });
+
+        expect(nextState.isFetching).to.be.true;
+      });
+
+      it('Should set `isFetching` to false on a failed request', function respondErrors() {
+        const oldState = { isFetching: true };
+
+        const nextState = libraryReducer(oldState, {
+          type: ActionTypes.FETCH_LIBRARY_FAILURE
+        });
+
+        expect(oldState.isFetching).to.be.true;
+        expect(nextState.isFetching).to.be.false;
+      });
     });
   });
 });
