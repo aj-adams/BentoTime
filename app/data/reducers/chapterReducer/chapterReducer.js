@@ -16,7 +16,7 @@ export default function chapter(state = initialState, action) {
       });
 
     case ActionTypes.FETCH_CHAPTER_SUCCESS:
-      return merge({}, state, action.chapter, {
+      return merge({}, state, {
         id: action.chapter.id,
         isFetching: false,
         lastUpdated: action.receivedAt,

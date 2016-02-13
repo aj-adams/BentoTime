@@ -1,51 +1,63 @@
 import { clone } from 'lodash';
 import chapterReducer from './chapterReducer';
-import libraryTypeFixture from 'test/fixtures/types/libraryTypeFixture';
-import chapterTypeFixture from 'test/fixtures/types/chapterTypeFixture';
 import * as ActionTypes from 'app/data/actions/ActionTypes';
+import chapterFixture from 'test/fixtures/types/chapterTypeFixture';
 
 describe('Data', function() {
   describe('Reducers', function() {
     describe('Chapter', function() {
-      xit('Should populate empty states correctly on success', function SetEmptyState() {
-        const bookId = '5372389645b9ef5a0b1d20d8';
-        const library = chapterReducer(undefined, {
-          type: ActionTypes.FETCH_CHAPTER_SUCCESS,
-          chapter: chapterTypeFixture,
-          bookId: bookId
+      it('Should set `isFetching` when a request is initiated', function setIsFetching() {
+        const nextState = chapterReducer(undefined, {
+          type: ActionTypes.FETCH_CHAPTER_REQUEST
         });
-        const book = library.books[bookId];
-        const chapter = book.chapters[chapterTypeFixture.id];
-        expect(chapter).to.deep.equal(chapterTypeFixture);
+
+        expect(nextState.isFetching).to.be.true;
       });
 
-      xit('Should replace state on successful update', function SetActiveState() {
-        const bookId = '5372389645b9ef5a0b1d20d8';
-        const library = clone(libraryTypeFixture);
-        const book = library.books[bookId];
-        book.chapters = {};
-        book.chapters[chapterTypeFixture.id] = {
-          '80': 'somepage',
-          '2': 'someotherpage'
-        };
-
-        const newLibrary = chapterReducer(library, {
+      it('Should populate empty states correctly on success', function SetEmptyState() {
+        const nextChapter = clone(chapterTypeFixture);
+        const nextState = chapterReducer(undefined, {
           type: ActionTypes.FETCH_CHAPTER_SUCCESS,
-          chapter: chapterTypeFixture,
-          bookId: bookId,
+          chapter: nextChapter,
           receivedAt: 12345
         });
 
-        const newBook = newLibrary.books[bookId];
-        const newChapter = newBook.chapters[chapterTypeFixture.id];
-        expect(newLibrary.lastUpdated).to.equal(12345);
-        expect(newLibrary.isFetching).to.be.false;
-        expect(newChapter[80]).to.equal(undefined);
-        expect(newChapter[2]).to.equal(undefined);
+        expect(nextState.id).to.equal(chapterTypeFixture.id);
+        expect(nextState.lastUpdated).to.equal(12345);
+        expect(nextState.pages).to.deep.equal(chapterTypeFixture.pages);
       });
 
-      xit('Should set isFetching on request');
-      xit('Should error on a failed request');
+      it('Should update state on successful update', function SetActiveState() {
+        const previousState = clone(chapterTypeFixture);
+        previousState.propertyToRemain = 'old state';
+        previousState.id = 'old id';
+
+        const nextChapter = clone(chapterTypeFixture);
+        nextChapter.id = 'next id';
+
+        const nextState = chapterReducer(previousState, {
+          type: ActionTypes.FETCH_CHAPTER_SUCCESS,
+          chapter: nextChapter,
+          receivedAt: 12345
+        });
+
+        expect(nextState.propertyToRemain).to.equal(previousState.propertyToRemain);
+        expect(nextState.id).to.equal(nextChapter.id);
+        expect(nextState.isFetching).to.equal(false);
+        expect(nextState.lastUpdated).to.equal(12345);
+        expect(nextState.pages).to.deep.equal(chapterTypeFixture.pages);
+      });
+
+      it('Should set `isFetching` to false on a failed request', function respondErrors() {
+        const oldState = { isFetching: true };
+
+        const nextState = chapterReducer(oldState, {
+          type: ActionTypes.FETCH_CHAPTER_FAILURE
+        });
+
+        expect(oldState.isFetching).to.be.true;
+        expect(nextState.isFetching).to.be.false;
+      });
     });
   });
 });
