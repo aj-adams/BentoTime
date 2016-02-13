@@ -10,10 +10,12 @@ class Layout extends Component {
     super(props);
   }
 
+  // Make sure we update our library on load
   componentWillMount() {
     this.updateLibrary(this.props);
   }
 
+  // Also update our library whenever our location changes
   componentWillReceiveProps(nextProps) {
     const currentLocation = this.props.location.pathname;
     const nextLocation = nextProps.location.pathname;
@@ -31,22 +33,18 @@ class Layout extends Component {
     const chapterid = params.chapterid || this.props.params.chapterid;
 
     if(isEmpty(library.books)) {
-      dispatch(fetchLibrary())
-        .flatMap( state => {
-          const book = state.library.books[bookid];
-          const bookNeedsUpdate = bookid && !book.lastUpdated;
-          return bookNeedsUpdate ? this.updateBook(book) : Observable.empty();
-        })
-        .subscribe();
+      dispatch(fetchLibrary()).flatMap( state => {
+        const book = state.library.books[bookid];
+        const bookNeedsUpdate = bookid && !book.lastUpdated;
+        return bookNeedsUpdate ? this.updateBook(book) : Observable.empty();
+      }).subscribe();
     } else {
       const book = library.books[bookid];
       if(book) {
         const bookNeedsUpdate = bookid && !book.lastUpdated;
         if(bookNeedsUpdate) { return this.updateBook(book).subscribe(); }
-
         const chapter = find(book.chapters, { id: chapterid });
-        const chapterNeedsUpdate = chapter && !chapter.lastUpdated;
-        if(chapterNeedsUpdate) { return dispatch(fetchChapter(book, chapter)).subscribe(); }
+        return this.updateChapter(book, chapter).subscribe();
       }
       return library;
     }
@@ -60,19 +58,25 @@ class Layout extends Component {
       .flatMap( state => {
         const book = state.book;
         const chapter = find(book && book.chapters, { id: params.chapterid });
-        const chapterNeedsUpdate = chapter && !chapter.lastUpdated;
-        return chapterNeedsUpdate ? dispatch(fetchChapter(book, chapter)) : Observable.empty();
+        return this.updateChapter(chapter);
       });
+  }
+
+  updateChapter(book, chapter) {
+    const { dispatch } = this.props;
+    const chapterNeedsUpdate = chapter && !chapter.lastUpdated;
+    return chapterNeedsUpdate ? dispatch(fetchChapter(book, chapter)) : Observable.empty();
   }
 
   render() {
     const { library, user, params } = this.props;
     const book = library.books[params.bookid];
     const chapter = find(book && book.chapters, { id: params.chapterid });
+    const page = (book && chapter && params.pageid) ? chapter[params.pageid] : undefined;
     return (
       <div>
         Bentotime
-        {React.cloneElement(this.props.children, { library, user, book, chapter })}
+        {React.cloneElement(this.props.children, { library, user, book, chapter, page })}
       </div>
     );
   }

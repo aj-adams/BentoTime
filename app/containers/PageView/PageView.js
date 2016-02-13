@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PageView = function PageView() {
-  return <h1>Page View</h1>;
+  return <div>Page View</div>;
 };
 
 export default PageView;
