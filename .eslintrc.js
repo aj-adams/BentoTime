@@ -18,7 +18,8 @@ module.exports = {
     'node': true
   },
   'globals': {
-    'expect': true
+    'expect': true,
+    'sinon': true
   },
   'extends': 'eslint:recommended',
   'ecmaFeatures': {
