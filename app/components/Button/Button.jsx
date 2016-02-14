@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Button = function(props) {
-  return <button className="button" ...props />;
+  return <button className="button" {...props} />;
 };
 
 Button.defaultProps = {
