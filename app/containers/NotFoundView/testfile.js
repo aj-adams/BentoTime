@@ -5,18 +5,15 @@ import { forEach } from 'lodash';
 
 describe('Containers', function() {
   describe('NotFoundView', function() {
-    var shallowRenderer;
-    var node;
-
     beforeEach(function() {
-      node = document.createElement('div');
-      shallowRenderer = TestUtils.createRenderer();
+      const shallowRenderer = TestUtils.createRenderer();
+      shallowRenderer.render(<NotFoundView />);
+      this.component = shallowRenderer.getRenderOutput();
     });
 
-    it('Should render a `h1`', function renderChapterView() {
-      shallowRenderer.render(<NotFoundView />);
-      const NotFoundViewInstance = shallowRenderer.getRenderOutput();
-      expect(NotFoundViewInstance.type).to.equal('h1');
+    it('Should render a `h1`', function() {
+      expect(this.component.type).to.equal('h1');
+      expect(this.component.props.children).to.equal('NotFound View');
     });
   });
 });
