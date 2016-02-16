@@ -3,11 +3,12 @@
   "version": "0.1.2",
   "description": "An application for reading Manga",
   "repository": "https://github.com/Blanket-Warriors/BentoTime",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "test": "karma start",
     "start": "export NODE_ENV='development'; webpack --config webpack/webpack.development.js --watch --progress",
-    "electron": "export NODE_ENV='development'; webpack --config webpack/webpack.development.js --watch & electron ."
+    "electron": "export NODE_ENV='development'; webpack --config webpack/webpack.development.js --watch & electron .",
+    "clean": "rm -rf public/build"
   },
   "babel": {
     "plugins": [
@@ -54,7 +55,7 @@
     "electron-debug": "^0.5.1",
     "electron-packager": "^5.1.1",
     "electron-prebuilt": "^0.36.4",
-    "eslint": "^1.10.3",
+    "eslint": "^2.0.0",
     "eslint-loader": "^1.2.0",
     "eslint-plugin-react": "^3.11.2",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -74,7 +75,6 @@
     "node-sass": "^3.4.2",
     "sass-loader": "^3.1.2",
     "sinon": "^1.17.1",
-    "sinon-chai": "^2.8.0",
     "source-map-support": "^0.4.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0",
