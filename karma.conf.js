@@ -51,8 +51,8 @@ module.exports = function(config) {
     },
 
     // Capture the browser, run it once, and exits.
-    singleRun: false,
-    watch: true,
+    singleRun: true,
+    watch: false,
 
     // Grab the test config from our webpack config file
     webpack: webpackConfig,
