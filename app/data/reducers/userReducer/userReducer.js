@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { UPDATE_LOCATION } from 'redux-simple-router';
+import { UPDATE_LOCATION } from 'react-router-redux';
 import * as ActionTypes from 'app/data/actions/ActionTypes';
 
 const initialState = {
