@@ -1,16 +1,20 @@
+/* VENDOR - Default fall-backs and external files
+======================================================================= */
+@import '~app/stylesheets/vendor/_reset';
+@import '~app/stylesheets/vendor/_fonts';
+@import '~app/stylesheets/vendor/_grid';
+
+/* HELPERS - Files for utilities and helpers
+======================================================================= */
+@import '~app/stylesheets/helpers/_mixins';
+@import '~app/stylesheets/helpers/_functions';
+
 /* BASE - Setup work
 ======================================================================= */
-@import '~app/stylesheets/_mixins';
-//@import '~stylesheets/_fonts';
-@import '~app/stylesheets/_color';
-@import '~app/stylesheets/_typography';
-@import '~app/stylesheets/_grid';
-
+@import '~app/stylesheets/base/_color';
+@import '~app/stylesheets/base/_typography';
+@import '~app/stylesheets/base/_position';
 
 /* COMPONENTS - Re-usable site elements.
 ======================================================================= */
 @import '~app/stylesheets/_components';
-
-body {
-	min-height: 100vh;
-}

@@ -1,14 +1,6 @@
 // Stolen from https://github.com/lazerwalker/Skeleton-Sass
 
-/* Prevent margins and paddings from adding or subtracting to the column size
-===================================================*/
-*, *:before, *:after {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-/* #Variable Definitions
+/* Variable Definitions
 ================================================== */
 $base-width: 960px;
 $tablet-width: 768px;
@@ -23,6 +15,14 @@ $topMinWidth: 768px;
 $medMaxWidth: $topMinWidth - 1;
 $botMaxWidth: $medMaxWidth;
 $botMinWidth: 480px;
+
+/* Margins don't add or subtract to the column size
+===================================================*/
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 
 /* Grid
 ================================================== */
@@ -144,10 +144,29 @@ $botMinWidth: 480px;
   }
 }
 
+@mixin full-width {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@mixin max-full-width {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@mixin pull-right {
+  float: right;
+}
+
+@mixin pull-left {
+  float: left;
+}
 
 /* Clearing
 ================================================== */
-// Include clearfix on parent to clear nested columns, or wrap each row of columns in a @include row
+
+// Including clears nested columns
+// Can also wrap each row of columns in a @include row
 @mixin clearfix {
   zoom: 1;
   &:after {

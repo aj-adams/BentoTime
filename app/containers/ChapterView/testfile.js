@@ -9,7 +9,7 @@ describe('Containers', function() {
       this.book = { id: '12345' };
       this.chapter = {
         title: 'Attack of the Mutant Bears from Neptune',
-        chapters: [{ image: 'theimage.src', id: '12355' }]
+        pages: [{ image: 'theimage.src', id: '12355' }]
       };
 
       const shallowRenderer = TestUtils.createRenderer();
@@ -35,9 +35,9 @@ describe('Containers', function() {
       expect(backButton.props.to).to.equal(`/book/${this.book.id}`);
     });
 
-    it('Should render a PageList component, and pass it all of our chapters', function() {
-      const list = find(this.component.props.children, {type:'ul'}).props;
-      expect(list.className).to.equal('chapter-view__pages');
+    it('Should render a PageList component, and pass it all of our pages', function() {
+      const pageList = this.component.props.children[2].props;
+      expect(pageList.pages).to.equal(this.chapter.pages);
     });
 
     it('Should render a Loading component if no book is passed in as a prop', function() {

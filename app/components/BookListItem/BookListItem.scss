@@ -1,0 +1,21 @@
+.book-list-item {
+  @include row();
+  @include columns(6);
+  list-style: none;
+  text-align: center;
+  padding: auto;
+  margin: auto;
+}
+
+.book-list-item__image {
+  @include columns(4);
+  float: none;
+  height: 300px;
+}
+
+.book-list-item__name {
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
