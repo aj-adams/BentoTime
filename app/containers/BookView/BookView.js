@@ -5,14 +5,7 @@ import ChapterList from 'app/components/ChapterList';
 import { Link } from 'react-router';
 
 const BookView = function BookView({ book }) {
-  if(!book) {
-    return (
-      <div>
-        <Link to="/" className="book-view__back">Back</Link>
-        <div>Loading...</div>
-      </div>
-    );
-  }
+  if(!book) { return <div className="book-view">loading...</div>; }
 
   return (
     <div className="book-view">
@@ -22,10 +15,6 @@ const BookView = function BookView({ book }) {
       <ChapterList book={book} />
     </div>
   );
-};
-
-BookView.defaultProps = {
-  book: {}
 };
 
 export default BookView;

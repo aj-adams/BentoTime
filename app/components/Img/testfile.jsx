@@ -1,6 +1,6 @@
 import React from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
-import Img from './Img.jsx';
+import Img from 'app/components/Img';
 
 describe('Components', function() {
   describe('Img', function() {

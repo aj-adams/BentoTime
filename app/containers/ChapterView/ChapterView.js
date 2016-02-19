@@ -5,7 +5,7 @@ import Img from 'app/components/Img';
 import { Link } from 'react-router';
 
 const ChapterView = function ChapterView({ chapter, book }) {
-  if( !book || !chapter ) { return <div className="chapter-view">loading...</div>; }
+  if( !book || !chapter ){ return <div className="chapter-view">loading...</div>; }
 
   var pages = 'No pages!';
   if(chapter.pages) {
@@ -25,10 +25,6 @@ const ChapterView = function ChapterView({ chapter, book }) {
       <ul className="chapter-view__pages">{pages}</ul>
     </div>
   );
-};
-
-ChapterView.defaultProps = {
-  chapter: {}
 };
 
 export default ChapterView;

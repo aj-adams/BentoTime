@@ -1,5 +1,5 @@
 import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
-import { syncHistory } from 'redux-simple-router';
+import { syncHistory } from 'react-router-redux';
 import rootReducer from 'app/data/reducers';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';

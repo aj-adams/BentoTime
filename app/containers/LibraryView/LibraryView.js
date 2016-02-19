@@ -4,9 +4,13 @@ import BookList from 'app/components/BookList';
 
 const LibraryView = function LibraryView({ library }) {
   if(library.lastUpdated) {
-    return <BookList books={library.books} />;
+    return (
+      <div className="library-view">
+        <BookList books={library.books} />
+      </div>
+    );
   }
-  return <div>Loading...</div>;
+  return <div>loading...</div>;
 };
 
 LibraryView.defaultProps = {

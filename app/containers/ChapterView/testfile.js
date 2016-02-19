@@ -1,35 +1,50 @@
 import React from 'react';
+import { find } from 'lodash';
 import TestUtils from 'react/lib/ReactTestUtils';
 import ChapterView from 'app/containers/ChapterView';
 
 describe('Containers', function() {
   describe('ChapterView', function() {
-    var shallowRenderer;
-    var node;
-    var book;
-    var chapter;
-
     beforeEach(function() {
-      node = document.createElement('div');
-      shallowRenderer = TestUtils.createRenderer();
-    });
-
-    it('Should render a `div` with correct child elements if given a chapter', function renderChapterView() {
-      book = { id: '12345' };
-
-      chapter = {
+      this.book = { id: '12345' };
+      this.chapter = {
         title: 'Attack of the Mutant Bears from Neptune',
-        chapters: [
-          { image: 'theimage.src', id: '12355' }
-        ]
+        chapters: [{ image: 'theimage.src', id: '12355' }]
       };
 
-      shallowRenderer.render(<ChapterView chapter={chapter} book={book} />);
-      const ChapterViewinstance = shallowRenderer.getRenderOutput();
-      expect(ChapterViewinstance.type).to.equal('div');
+      const shallowRenderer = TestUtils.createRenderer();
+      shallowRenderer.render(<ChapterView chapter={this.chapter} book={this.book} />);
+      this.component = shallowRenderer.getRenderOutput();
     });
 
-    it('Should render a PageList component, and pass it all of our chapters');
-    it('Should render a Loading component if no book is passed in as a prop');
+    it('Should render a `div` with a class of `chapter-view`', function() {
+      expect(this.component.type).to.equal('div');
+      expect(this.component.props.className).to.equal('chapter-view');
+      expect(this.component.props.children.length).to.equal(3);
+    });
+
+    it('Should render the title of the chapter', function() {
+      const title = find(this.component.props.children, {type:'h1'}).props;
+      expect(title.className).to.equal('chapter-view__title');
+      expect(title.children).to.equal(this.chapter.title);
+    });
+
+    it('Should render a back button', function() {
+      const backButton = this.component.props.children[1];
+      expect(backButton.props.className).to.equal('chapter-view__back');
+      expect(backButton.props.to).to.equal(`/book/${this.book.id}`);
+    });
+
+    it('Should render a PageList component, and pass it all of our chapters', function() {
+      const list = find(this.component.props.children, {type:'ul'}).props;
+      expect(list.className).to.equal('chapter-view__pages');
+    });
+
+    it('Should render a Loading component if no book is passed in as a prop', function() {
+      const shallowRenderer = TestUtils.createRenderer();
+      shallowRenderer.render(<ChapterView />);
+      this.component = shallowRenderer.getRenderOutput();
+      expect(this.component.props.children).to.equal('loading...');
+    });
   });
 });

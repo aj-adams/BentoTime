@@ -35,4 +35,3 @@ The data layout of BentoTime looks something like this:
     }
   }
 ```
-
