@@ -12,7 +12,7 @@ class Layout extends Component {
 
   // Make sure we update our library on load
   componentWillMount() {
-    this.updateLibrary(this.props);
+    this.updateLibrary(this.props).subscribe();
   }
 
   // Also update our library whenever our location changes
@@ -20,52 +20,57 @@ class Layout extends Component {
     const currentLocation = this.props.location.pathname;
     const nextLocation = nextProps.location.pathname;
     if(currentLocation !== nextLocation) {
-      this.updateLibrary(nextProps.params);
+      this.updateLibrary(nextProps.params).subscribe();
     }
   }
 
   updateLibrary(params) {
-    const { dispatch, library } = this.props;
-
-    // Prefer to use the book and chapter id of our next location.
-    // Will use our current location if we initialize on a book, chapter, or page view
     const bookid = params.bookid || this.props.params.bookid;
     const chapterid = params.chapterid || this.props.params.chapterid;
 
+    return this.updateBooks(this.props)
+      .flatMap( () => this.updateBook(this.props, bookid))
+      .flatMap( () => this.updateChapter(this.props, bookid, chapterid));
+  }
+
+  updateBooks(state) {
+    const { dispatch, library } = state;
     if(isEmpty(library.books)) {
-      dispatch(fetchLibrary()).flatMap( state => {
-        const book = state.library.books[bookid];
-        const bookNeedsUpdate = bookid && !book.lastUpdated;
-        return bookNeedsUpdate ? this.updateBook(book) : Observable.empty();
-      }).subscribe();
+      return dispatch(fetchLibrary());
     } else {
-      const book = library.books[bookid];
-      if(book) {
-        const bookNeedsUpdate = bookid && !book.lastUpdated;
-        if(bookNeedsUpdate) { return this.updateBook(book).subscribe(); }
-        const chapter = find(book.chapters, { id: chapterid });
-        return this.updateChapter(book, chapter).subscribe();
-      }
-      return library;
+      return Observable.just(this.props);
     }
   }
 
-  updateBook(book) {
-    const { dispatch, library, params } = this.props;
-    const { bookid, chapterid } = params;
+  updateBook(state, bookid) {
+    if(!state || !state.library || !state.library.books || !bookid) {
+      return Observable.just(state);
+    }
 
-    return dispatch(fetchBook(book))
-      .flatMap( state => {
-        const book = state.book;
-        const chapter = find(book && book.chapters, { id: params.chapterid });
-        return this.updateChapter(chapter);
-      });
+    const { dispatch } = this.props;
+    const book = find(state.library.books, { id: bookid });
+    const bookNeedsUpdate = !book.lastUpdated;
+    if(!bookNeedsUpdate) {
+      return Observable.just(state);
+    }
+    return dispatch(fetchBook(book));
   }
 
-  updateChapter(book, chapter) {
+  updateChapter(state, bookid, chapterid) {
+    const improperState = !state || !state.library || !state.library.books;
+    const missingId = !bookid || !chapterid;
+    if(improperState || missingId) {
+      return Observable.just(state);
+    }
+
     const { dispatch } = this.props;
+    const book = find(state.library.books, { id: bookid });
+    const chapter = find(book.chapters, { id: chapterid });
     const chapterNeedsUpdate = chapter && !chapter.lastUpdated;
-    return chapterNeedsUpdate ? dispatch(fetchChapter(book, chapter)) : Observable.empty();
+    if(!chapterNeedsUpdate) {
+      return Observable.just(state);
+    }
+    return dispatch(fetchChapter(book, chapter));
   }
 
   render() {
@@ -86,7 +91,7 @@ function select(state) {
   return {
     library: cloneDeep(state.library),
     user: cloneDeep(state.user),
-    routing: cloneDeep(state.user)
+    routing: cloneDeep(state.routing)
   };
 }
 
