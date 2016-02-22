@@ -1,7 +1,7 @@
 import React from 'react';
 import { find } from 'lodash';
 import TestUtils from 'react/lib/ReactTestUtils';
-import LibraryView from 'app/containers/libraryView';
+import LibraryView from 'app/containers/LibraryView';
 
 describe('Containers', function() {
   describe('LibraryView', function() {

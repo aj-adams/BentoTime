@@ -3,8 +3,13 @@ import { Link } from 'react-router';
 
 const BookListItem = function({ key, book }) {
   return (
-    <li key={key}>
-      <Link to={"book/" + book.id}>{book.title}</Link>
+    <li className="book-list-item" key={key}>
+      <Link
+        className="book-list-item__name"
+        to={"book/" + book.id}
+      >
+        {book.title}
+      </Link>
     </li>
   );
 };

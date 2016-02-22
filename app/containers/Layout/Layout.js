@@ -74,8 +74,8 @@ class Layout extends Component {
     const chapter = find(book && book.chapters, { id: params.chapterid });
     const page = (book && chapter && params.pageid) ? chapter[params.pageid] : undefined;
     return (
-      <div>
-        Bentotime
+      <div className="layout">
+        <h1 className="layout__title">Bentotime</h1>
         {React.cloneElement(this.props.children, { library, user, book, chapter, page })}
       </div>
     );
