@@ -60,6 +60,7 @@
     "eslint-plugin-react": "^3.11.2",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-loader": "^0.4.0",
+    "inject-loader": "^2.0.1",
     "json-loader": "^0.5.4",
     "karma": "^0.13.10",
     "karma-chai": "^0.1.0",

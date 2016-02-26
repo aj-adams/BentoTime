@@ -3,76 +3,82 @@ import { isEmpty, cloneDeep, find } from 'lodash';
 import { connect } from 'react-redux';
 import { Observable } from 'rx';
 
-import { fetchLibrary, fetchBook, fetchChapter, setUpdated } from 'app/data/actions';
+import { fetchLibrary, fetchBook, fetchChapter } from 'app/data/actions';
 
 class Layout extends Component {
   constructor(props) {
     super(props);
   }
 
-  // Make sure we update our library on load
   componentWillMount() {
-    this.updateLibrary(this.props);
+    this.updateLibrary(this.props.params).subscribe();
   }
 
-  // Also update our library whenever our location changes
+  // Update our library whenever our location changes
   componentWillReceiveProps(nextProps) {
     const currentLocation = this.props.location.pathname;
     const nextLocation = nextProps.location.pathname;
     if(currentLocation !== nextLocation) {
-      this.updateLibrary(nextProps.params);
+      this.updateLibrary(nextProps.params).subscribe();
     }
   }
 
   updateLibrary(params) {
     const { dispatch, library } = this.props;
-
-    // Prefer to use the book and chapter id of our next location.
-    // Will use our current location if we initialize on a book, chapter, or page view
     const bookid = params.bookid || this.props.params.bookid;
     const chapterid = params.chapterid || this.props.params.chapterid;
 
-    if(isEmpty(library.books)) {
-      dispatch(fetchLibrary()).flatMap( state => {
-        const book = state.library.books[bookid];
-        const bookNeedsUpdate = bookid && !book.lastUpdated;
-        return bookNeedsUpdate ? this.updateBook(book) : Observable.empty();
-      }).subscribe();
-    } else {
-      const book = library.books[bookid];
-      if(book) {
-        const bookNeedsUpdate = bookid && !book.lastUpdated;
-        if(bookNeedsUpdate) { return this.updateBook(book).subscribe(); }
-        const chapter = find(book.chapters, { id: chapterid });
-        return this.updateChapter(book, chapter).subscribe();
-      }
-      return library;
-    }
+    return (!library.lastUpdated ? dispatch(fetchLibrary()) : Observable.just(this.props))
+      .flatMap( () => this.updateBook(this.props, bookid))
+      .flatMap( () => this.updateChapter(this.props, bookid, chapterid));
   }
 
-  updateBook(book) {
-    const { dispatch, library, params } = this.props;
-    const { bookid, chapterid } = params;
-
-    return dispatch(fetchBook(book))
-      .flatMap( state => {
-        const book = state.book;
-        const chapter = find(book && book.chapters, { id: params.chapterid });
-        return this.updateChapter(chapter);
-      });
-  }
-
-  updateChapter(book, chapter) {
+  updateBook(state, bookid) {
     const { dispatch } = this.props;
-    const chapterNeedsUpdate = chapter && !chapter.lastUpdated;
-    return chapterNeedsUpdate ? dispatch(fetchChapter(book, chapter)) : Observable.empty();
+
+    if(!state.library.books || !bookid) {
+      return Observable.just(state);
+    }
+
+    const book = find(state.library.books, { id: bookid });
+    const bookNeedsUpdate = !book || !book.lastUpdated;
+
+    if(bookNeedsUpdate) {
+      return dispatch(fetchBook(book));
+    }
+    return Observable.just(state);
+  }
+
+  updateChapter(state, bookid, chapterid) {
+    const { dispatch } = this.props;
+
+    if(!state.library.books || !bookid || !chapterid) {
+      return Observable.just(state);
+    }
+
+    const book = find(state.library.books, { id: bookid });
+    const chapter = find(book.chapters, { id: chapterid });
+    const chapterNeedsUpdate = Boolean(chapter && !chapter.lastUpdated);
+
+    if(chapterNeedsUpdate) {
+      return dispatch(fetchChapter(book, chapter));
+    }
+    return Observable.just(state);
   }
 
   render() {
-    const { library, user, params } = this.props;
-    const book = library.books[params.bookid];
-    const chapter = find(book && book.chapters, { id: params.chapterid });
-    const page = (book && chapter && params.pageid) ? chapter[params.pageid] : undefined;
+    const { library, user } = this.props;
+    const { bookid, chapterid, pageid } = this.props.params;
+
+    const shouldFindBook = Boolean(library.books && bookid);
+    const book = shouldFindBook ? library.books[bookid] : undefined;
+
+    const shouldFindChapter = Boolean(book && book.chapters && chapterid);
+    const chapter = shouldFindChapter ? find(book.chapters, { id: chapterid }) : undefined;
+
+    const shouldFindPage = Boolean(book && chapter && pageid);
+    const page = shouldFindPage ? chapter[pageid] : undefined;
+
     return (
       <div className="layout">
         <h1 className="layout__title">Bentotime</h1>
@@ -82,12 +88,30 @@ class Layout extends Component {
   }
 }
 
-function select(state) {
+Layout.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  library:  PropTypes.object,
+  params:   PropTypes.object,
+  routing:  PropTypes.object,
+  user:     PropTypes.object
+};
+
+Layout.defaultProps = {
+  library: {},
+  params: {},
+  routing: {},
+  user: {}
+};
+
+function mapStateToProps(state) {
   return {
     library: cloneDeep(state.library),
     user: cloneDeep(state.user),
-    routing: cloneDeep(state.user)
+    routing: cloneDeep(state.routing)
   };
 }
 
-export default connect(select)(Layout);
+// Attaches an addition export so that we can test the component without Redux
+export const unconnected = Layout;
+
+export default connect(mapStateToProps)(Layout);
