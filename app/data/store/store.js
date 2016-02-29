@@ -4,7 +4,7 @@ import rootReducer from 'app/data/reducers';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 
-export default function(browserHistory) {
+export default function storeCreator(browserHistory) {
   // Create our middleware plugins
   const loggerMiddleware = createLogger();
   const reduxRouterMiddleware = syncHistory(browserHistory);
