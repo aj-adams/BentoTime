@@ -1,6 +1,6 @@
 import { clone } from 'lodash';
 import bookReducer from './bookReducer';
-import bookFixture from 'test/fixtures/types/bookTypeFixture';
+import bookFixture from 'test/fixtures/models/bookFixture';
 import * as ActionTypes from 'app/data/actions/ActionTypes';
 
 describe('Data', function() {

@@ -13,5 +13,5 @@ import BookListItem from 'app/components/BookListItem';
 
 #### Props
 
-* `book`: An single [Book](../../data/types/Book)
+* `book`: An single [Book](../../data/models/Book)
 * `key`: Helps us keep track of a list of BookListItems

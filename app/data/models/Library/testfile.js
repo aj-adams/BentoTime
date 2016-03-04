@@ -1,6 +1,6 @@
-import Library from 'app/data/types/Library';
+import Library from './Library';
 import apiResponse from 'test/fixtures/mangaEden/listApiFixture';
-import exampleOutput from 'test/fixtures/types/libraryTypeFixture';
+import exampleOutput from 'test/fixtures/models/libraryFixture';
 
 describe('Data', function() {
   describe('Types', function() {

@@ -13,6 +13,6 @@ import ChapterListItem from 'app/components/ChapterListItem';
 
 #### Props
 
-* `book`: An single [Book](../../data/types/Book)
-* `chapter`: An single [Chapter](../../data/types/Chapter)
+* `book`: An single [Book](../../data/models/Book)
+* `chapter`: An single [Chapter](../../data/models/Chapter)
 * `key`: Helps us keep track of a list of ChapterListItems

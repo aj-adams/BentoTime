@@ -1,9 +1,9 @@
 import { Observable } from 'rx';
 import request from 'superagent';
 
-import Library from 'app/data/types/Library';
-import Book from 'app/data/types/Book';
-import Chapter from 'app/data/types/Chapter';
+import Library from 'app/data/models/Library';
+import Book from 'app/data/models/Book';
+import Chapter from 'app/data/models/Chapter';
 
 export const baseHost = 'http://www.mangaeden.com/';
 export const imgHost = 'http://cdn.mangaeden.com/mangasimg/';
