@@ -43,12 +43,11 @@ DirectoryDefaultFilePlugin.prototype.apply = function (resolver) {
 ======================================================================= */
 module.exports = {
   baseDir: baseDir,
-  entry: {
-    'main.js': path.join(baseDir, 'app/app.jsx')
-  },
+  entry: path.join(baseDir, 'app/app.jsx'),
   output: {
     path: path.join(baseDir, 'public', 'build'),
-    filename: '[name]'
+    publicPath: '/build/',
+    filename: 'main.js'
   },
   devtool: 'source-map',
   module: {
@@ -77,6 +76,9 @@ module.exports = {
   },
   node: {
     fs: 'empty'
+  },
+  devServer: {
+    contentBase: path.join(baseDir, 'public')
   },
   webpackServer: {
     noInfo: true

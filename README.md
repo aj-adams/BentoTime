@@ -7,8 +7,12 @@ A native pc/mac/linux app for reading and saving manga.
 ## Usage
   - install dependencies - `npm install`
   - make sure all the tests are running - `npm test`
-  - run BentoTime in browser for development - `npm start`
-  - run BentoTime in Electron for development - `npm run electron`
+  - run Webpack dev server - `npm start`
+  
+### Electron
+Run these two commands simultaneously in different console tabs.
+`npm start`
+`npm run electron`
 
 ## Technologies
 ### Electron

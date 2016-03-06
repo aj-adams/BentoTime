@@ -17,10 +17,13 @@ app.on('window-all-closed', function allWindowsAreClosed() {
 
 app.on('ready', function initializeElectron() {
   mainWindow = new BrowserWindow({width: 800, height: 600});
+
   if (process.env['NODE_ENV'] == 'development') {
-    setTimeout(function waitForBrowsersync() {
-      mainWindow.loadURL('http://localhost:3005');
-    }, 5000);
+
+    // in development, the webpack dev server serves resources from memory
+    // http://goo.gl/SGwTdJ
+    mainWindow.loadURL(`http://localhost:3000`); 
+
   } else {
     mainWindow.loadURL(`file://${__dirname}/public/index.html`);
   }
