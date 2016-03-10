@@ -14,6 +14,9 @@ Run these two commands simultaneously in different console tabs.
 `npm start`
 `npm run electron`
 
+## Contributing
+Use our contribution repo to get an idea of the format we expect for PR's, commits, and issues.
+
 ## Technologies
 ### Electron
 [Electron](http://electron.atom.io/) lets us build native desktop applications using web technologies!
