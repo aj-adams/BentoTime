@@ -15,7 +15,7 @@ Run these two commands simultaneously in different console tabs.
 `npm run electron`
 
 ## Contributing
-Use our contribution repo to get an idea of the format we expect for PR's, commits, and issues.
+Use our [contribution repo](https://github.com/Blanket-Warriors/Style-Guide/tree/master/Contribution) to get an idea of the format we expect for PR's, commits, and issues.
 
 ## Technologies
 ### Electron
