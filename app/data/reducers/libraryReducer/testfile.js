@@ -1,5 +1,5 @@
 import libraryReducer from './libraryReducer';
-import libraryTypeFixture from 'test/fixtures/types/libraryTypeFixture';
+import libraryFixture from 'test/fixtures/models/libraryFixture';
 import * as ActionTypes from 'app/data/actions/ActionTypes';
 
 describe('Data', function() {
@@ -8,21 +8,21 @@ describe('Data', function() {
       it('Should populate empty states correctly on success', function SetEmptyState() {
         const library = libraryReducer(undefined, {
           type: ActionTypes.FETCH_LIBRARY_SUCCESS,
-          library: libraryTypeFixture,
+          library: libraryFixture,
           receivedAt: 12345
         });
 
-        expect(library.books).to.deep.equal(libraryTypeFixture.books);
+        expect(library.books).to.deep.equal(libraryFixture.books);
         expect(library.isFetching).to.be.false;
         expect(library.lastUpdated).to.equal(12345);
-        expect(library.totalBooks).to.equal(libraryTypeFixture.totalBooks);
+        expect(library.totalBooks).to.equal(libraryFixture.totalBooks);
       });
 
       it('Should update active states correctly on success', function SetActiveState() {
         const bookId = '5372389645b9ef5a0b1d20d8';
         const library = libraryReducer(undefined, {
           type: ActionTypes.FETCH_LIBRARY_SUCCESS,
-          library: libraryTypeFixture,
+          library: libraryFixture,
           receivedAt: 12345
         });
 
@@ -31,7 +31,7 @@ describe('Data', function() {
 
         const newLibrary = libraryReducer(library, {
           type: ActionTypes.FETCH_LIBRARY_SUCCESS,
-          library: libraryTypeFixture,
+          library: libraryFixture,
           receivedAt: 12345
         });
 

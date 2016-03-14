@@ -13,4 +13,4 @@ import BookList from 'app/components/BookList';
 
 #### Props
 
-* `books`: An object or array of [Books](../../data/types/Book)
+* `books`: An object or array of [Books](../../data/models/Book)

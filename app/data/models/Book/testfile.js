@@ -1,9 +1,9 @@
 import Book from './Book';
 import apiResponse from 'test/fixtures/mangaEden/mangaApiFixture';
-import exampleOutput from 'test/fixtures/types/bookTypeFixture';
+import exampleOutput from 'test/fixtures/models/bookFixture';
 
 describe('Data', function() {
-  describe('Types', function() {
+  describe('Models', function() {
     describe('Book', function() {
       it('should format book api calls correctly', function testFormatBook() {
         const bookID = '55a1a17b719a1609004ad58f';

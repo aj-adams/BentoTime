@@ -1,6 +1,6 @@
 import Chapter from './Chapter';
 import apiResponse from 'test/fixtures/mangaEden/chapterApiFixture';
-import exampleOutput from 'test/fixtures/types/chapterTypeFixture';
+import exampleOutput from 'test/fixtures/models/chapterFixture';
 
 describe('Data', function() {
   describe('Types', function() {

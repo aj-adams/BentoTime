@@ -13,4 +13,4 @@ import ChapterList from 'app/components/ChapterList';
 
 #### Props
 
-* `Chapters`: An object or array of [Chapters](../../data/types/Chapter)
+* `Chapters`: An object or array of [Chapters](../../data/models/Chapter)

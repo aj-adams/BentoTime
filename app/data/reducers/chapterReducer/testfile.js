@@ -1,7 +1,7 @@
 import { clone } from 'lodash';
 import chapterReducer from './chapterReducer';
 import * as ActionTypes from 'app/data/actions/ActionTypes';
-import chapterFixture from 'test/fixtures/types/chapterTypeFixture';
+import chapterFixture from 'test/fixtures/models/chapterFixture';
 
 describe('Data', function() {
   describe('Reducers', function() {
