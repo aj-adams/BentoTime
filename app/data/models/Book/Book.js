@@ -1,6 +1,7 @@
 import { assign, map } from 'lodash';
 import { imgHost } from 'app/data/services/mangaEdenApi';
 import Chapter from 'app/data/models/Chapter';
+import decodeEntities from 'app/utilities/decodeEntities';
 
 const Book = function Book() {};
 
@@ -11,7 +12,7 @@ Book.createFromMangaEdenMangaApi = function(response, bookID) {
 
   return assign(new Book(), {
     id: bookID,
-    title: response.title,
+    title: decodeEntities(response.title),
     image: imgHost + response.image,
     artist: response.artist,
     author: response.author,
@@ -20,7 +21,7 @@ Book.createFromMangaEdenMangaApi = function(response, bookID) {
     lastUpdated: undefined,
     status: response.status,
     chapters: chapters,
-    description: response.description,
+    description: decodeEntities(response.description),
     hits: response.hits,
     categories: response.categories,
     alias: response.alias
