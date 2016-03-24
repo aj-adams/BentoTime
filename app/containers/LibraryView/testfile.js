@@ -8,7 +8,16 @@ describe('Containers', function() {
     beforeEach(function() {
       this.library = {
         lastUpdated: 12345,
-        books: {}
+        books: {
+          "flappy-monkey": {
+            id: "flappy-monkey",
+            title: "Flappy Monkey Banana Attack"
+          },
+          "flappy-monkey-2": {
+            id: "flappy-monkey-2",
+            title: "Return of the Flappy Monkey"
+          }
+        }
       };
 
       const shallowRenderer = TestUtils.createRenderer();
@@ -22,8 +31,8 @@ describe('Containers', function() {
     });
 
     it('Should render a BookList component, and pass it all of our books', function() {
-      const bookList = this.component.props.children;
-      expect(bookList.books).to.equal(this.books);
+      const bookList = this.component.props.children[1].props.books;
+      expect(bookList).to.equal(this.library.books);
     });
 
     it('Should render a Loading component if it has never been updated', function() {
